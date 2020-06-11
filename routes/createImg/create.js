@@ -2,20 +2,27 @@
 import express from "express";
 import multer from "multer";
 import converters from "bytes-to-x";
-const router = express.Router();
-const upload = multer({ dest: "routes/createImg/testing/" }); //? uploading to ./testing folder
 
-// TODO : change the name of the image file name to human-readable file name .
+const router = express.Router();
+const upload = multer(); 
+
+//>> using the Image mode to create images in the database
+import Imgaes from '../../db/image.js';
 
 //>> the router to create image - i used post for this - will upload image
-router.post("/create", upload.single("eggs"), (req, res) => {
-  //? testing to see if i don't do any mistake so i send back the results
-  res.send({
-    name: req.file.originalname,
-    type: req.file.mimetype,
-    size: converters.toKibibytes(req.file.size),
-    body: req.body,
-  });
+router.post("/create", upload.single("eggs"), async(req, res) => {
+    try {
+      const photo = new Imgaes({
+        fileName:req.file.originalname,
+        fileType:req.file.mimetype,
+        fileSize:converters.toKibibytes(req.file.size),
+        file:req.file.buffer
+      });
+      await photo.save();
+      res.send("Done");
+    } catch (e) {
+      res.status(404).send({e,loc:"Creat imge R"});
+    }
 });
 
 export default router;
