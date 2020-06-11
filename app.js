@@ -2,6 +2,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 //! End here
+import "./db/mongoose.js";
 import express from "express";
 import Rcreate from "./routes/createImg/create.js";
 import Rread from './routes/readingImg/read.js';
