@@ -1,8 +1,12 @@
+//! Important keep the following require statment at the top no matter what
+import dotenv from 'dotenv';
+dotenv.config();
+//! End here
 import express from "express";
 import Rcreate from "./routes/createImg/create.js";
 import Rread from './routes/readingImg/read.js';
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 //>> using a default setting for express server
 app.use(express.json());
